@@ -3,8 +3,6 @@
 from __future__ import print_function
 
 import os
-import argparse
-import boto3
 import hashlib
 import math
 import binascii
@@ -193,20 +191,3 @@ class GreenGlacierUploader(object):
         except:
             g.upload.abort()
             raise
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-p', '--profile', default='default', help='AWS profile to use')
-    parser.add_argument('-v', '--vault', default='default', help='Glacier vault to use')
-    parser.add_argument('filename', help='File to upload')
-    args = parser.parse_args()
-
-    session = boto3.session.Session(profile_name=args.profile)
-    glacier = session.resource('glacier')
-    vault = glacier.Vault('-', args.vault)
-    uploader = GreenGlacierUploader(vault)
-    try:
-        uploader.upload(args.filename)
-    except GreenGlacierUploader.UploadFailedException as e:
-        print("Failed to upload {}: {}".format(args.filename, e))

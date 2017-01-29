@@ -1,24 +1,28 @@
-A sample Python project
+GreenGlacier
 =======================
 
-A sample project that exists as an aid to the `Python Packaging User Guide
-<https://packaging.python.org>`_'s `Tutorial on Packaging and Distributing
-Projects <https://packaging.python.org/en/latest/distributing.html>`_.
-
-This projects does not aim to cover best practices for Python project
-development as a whole. For example, it does not provide guidance or tool
-recommendations for version control, documentation, or testing.
+A gevent-based concurrent uploader for glacier using Boto3
 
 ----
 
-This is the README file for the project.
+This package aims to provide a simple library interface for completing multipart
+uploads to `AWS Glacier <https://aws.amazon.com/glacier/>`_. It uses `gevent
+<http://www.gevent.org/>` provided greenlets for concurrency and connects using
+a Boto3 Vault resource (or something which is acts like one) provided by the
+consumer. This package does not depend directly on Boto3.
 
-The file should use UTF-8 encoding and be written using ReStructured Text. It
-will be used to generate the project webpage on PyPI and will be displayed as
-the project homepage on common code-hosting services, and should be written for
-that purpose.
+A reference implementation:
 
-Typical contents for this file would include an overview of the project, basic
-usage examples, etc. Generally, including the project changelog in here is not
-a good idea, although a simple "What's New" section for the most recent version
-may be appropriate.
+::
+
+    import boto3
+    import sys
+    from greenglacier import GreenGlacierUploader
+
+    glacier = boto3.resource('glacier')
+    vault = glacier.Vault('-', 'vault name')
+    uploader = GreenGlacierUploader(vault)
+    try:
+        uploader.upload(sys.argv[1])
+    except GreenGlacierUploader.UploadFailedException as e:
+        print("Failed to upload {}: {}".format(args.filename, e))

@@ -40,7 +40,7 @@ setup(
 
     py_modules=["greenglacier"],
 
-    install_requires=['boto3', 'gevent', 'retrying'],
+    install_requires=['gevent', 'retrying'],
 
     extras_require={
         'dev': ['check-manifest'],
