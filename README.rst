@@ -25,4 +25,4 @@ A reference implementation:
     try:
         uploader.upload(sys.argv[1])
     except GreenGlacierUploader.UploadFailedException as e:
-        print("Failed to upload {}: {}".format(args.filename, e))
+        print("Failed to upload {}: {}".format(sys.argv[1], e))
