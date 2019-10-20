@@ -15,9 +15,9 @@ A reference implementation:
 
 ::
 
-    import boto3
     import sys
     from greenglacier import GreenGlacierUploader
+    import boto3
 
     glacier = boto3.resource('glacier')
     vault = glacier.Vault('-', 'vault name')
